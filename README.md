@@ -42,11 +42,12 @@ Suggestions appear as you type and only show what makes sense at that point:
 - Lists continue automatically when you press Enter
 - Checks for common mistakes, such as a missing space after `#`, a link with no address, a picture with no alt text, or a code block that's never closed
 - A clickable cheat sheet that adds examples to your document
+- Understands YAML front matter (the `---` block at the top used by skill files and blogs), shows it as a table, and checks a skill's `name` and `description`
 - An optional CSS pane for styling the document
 - Download as `.md` or as a styled `.html` page, and open existing `.md` files
 
 ### Lessons and projects
-- Eight starter lessons: Hello web, a profile card, a click counter, a bouncing ball, a responsive layout, a **Spot the bugs** debugging exercise, **Markdown basics**, and a blank page
+- Nine starter lessons: Hello web, a profile card, a click counter, a bouncing ball, a responsive layout, a **Spot the bugs** debugging exercise, **Markdown basics**, an **AI skill file** (a sample `SKILL.md` for Claude that also works as ChatGPT instructions), and a blank page
 - Each lesson opens as a new project, and "Reset to starting code" puts it back how it began
 - Work saves automatically in the browser
 - Download any web project as a single `.html` file, or open an existing `.html` file to split it into HTML, CSS and JavaScript

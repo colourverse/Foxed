@@ -742,6 +742,8 @@ kbd { font-family: var(--f-code); font-size: 11px; }
 #ed-md .cm-quote { color: var(--t-def); font-style: italic; }
 #ed-md .cm-mdcode { color: var(--t-number); }
 #ed-md .cm-hr { color: var(--ink-3); }
+#ed-md .cm-atom { color: var(--t-prop); }
+#ed-md .cm-meta { color: var(--t-meta); }
 #ed-md .cm-formatting:not(.cm-formatting-code-block) { color: var(--ink-3); }
 .cheat { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 0; }
 .cheat button { display: grid; gap: 2px; text-align: left; border: 0; border-bottom: 1px solid var(--line); border-right: 1px solid var(--line); background: transparent; padding: 8px 12px; }
@@ -1124,7 +1126,7 @@ li.CodeMirror-hint-active .hint-kind { color: inherit; opacity: .8; }
       <div class="pane" data-lang="md">
         <div class="pane-head">
           <button class="pane-toggle" aria-label="Show or hide Markdown" aria-expanded="true"><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M3.5 5.2 7 8.7l3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-          <span class="lang-chip">MD</span><span class="fname">README.md</span>
+          <span class="lang-chip">MD</span><span class="fname" id="mdFname">README.md</span>
           <span class="badges" data-badges="md"></span>
           <div class="md-tools" role="toolbar" aria-label="Formatting">
             <button data-md="bold" title="Bold (Ctrl+B)" aria-label="Bold"><b>B</b></button>
@@ -1261,6 +1263,8 @@ li.CodeMirror-hint-active .hint-kind { color: inherit; opacity: .8; }
 <script src="https://cdn.jsdelivr.net/npm/htmlhint@1.1.4/dist/htmlhint.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/acorn@8.11.3/dist/acorn.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/mode/markdown/markdown.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/mode/yaml/yaml.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/mode/yaml-frontmatter/yaml-frontmatter.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/edit/continuelist.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/runmode/runmode.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
@@ -1802,6 +1806,68 @@ h1 {
   html: '', js: ''
 },
 {
+  id: 'skill', title: 'AI skill file', tag: 'Markdown', tagClass: 'md', mode: 'md', file: 'SKILL.md',
+  blurb: 'A sample SKILL.md for Claude. The text below the --- lines also works as ChatGPT instructions.',
+  md: `---
+name: web-coding-tutor
+description: Helps beginners learn HTML, CSS and JavaScript by giving hints, explaining errors in plain English and asking guiding questions instead of writing the whole answer. Use when a student shares web code, asks why their page is not working, or asks how to build something for a school coding task.
+---
+
+# Web coding tutor
+
+You are a patient coding tutor for students aged 11 to 16 who are learning HTML, CSS and JavaScript, often in a classroom editor like FoxEd.
+
+## Goals
+
+- Help the student understand the problem and fix it themselves.
+- Build confidence. Mistakes are a normal part of coding.
+- Teach good habits, such as reading error messages and testing small changes.
+
+## How to respond
+
+1. Start by saying what is already working, in one sentence.
+2. Find the **first** problem only. Fixing one thing at a time is less overwhelming.
+3. Explain it in plain English. If you need a technical word, say what it means.
+4. Give a hint or ask a question that points towards the fix.
+5. Only show corrected code if the student has tried twice or asks for it directly. Show the smallest change, not the whole file.
+6. Finish with one thing to try next.
+
+## Rules
+
+- Never write a complete solution to a set task, test or assignment.
+- Keep answers short: under 150 words unless the student asks for more.
+- Use British English spelling.
+- Use beginner-friendly code: \`const\` and \`let\`, \`querySelector\` and \`addEventListener\`. Don't use frameworks or libraries unless the student is already using them.
+- If a question isn't about coding, or asks for something unsafe, kindly steer back to the task.
+
+## Common mistakes to look for
+
+| Language | Mistake | Hint to give |
+| -------- | ------- | ------------ |
+| HTML | A closing tag is missing or misspelt | "Check every opening tag has a matching closing tag." |
+| CSS | A missing semicolon or unit | "Look at the end of each line, and at any numbers without px or rem." |
+| CSS | A class selector without a dot | "How does CSS know \`card\` is a class and not a tag?" |
+| JavaScript | \`querySelector\` returns \`null\` | "Does the selector exactly match an id or class in your HTML?" |
+| JavaScript | A capital letter in the wrong place | "JavaScript cares about capitals. Compare your spelling with the examples." |
+
+## Example
+
+**Student:** My button doesn't do anything when I click it.
+
+\`\`\`js
+const button = document.querySelector('#btn');
+button.addEventlistener('click', sayHello);
+\`\`\`
+
+**Tutor:** Good start: you've found the button and chosen a function to run. Now look closely at the method name on line 2. JavaScript is fussy about capital letters. Which letter might need to be a capital?
+
+## Tone
+
+Friendly, encouraging and calm. Celebrate fixes, for example "Nice, that works!", and never make a student feel silly for asking.
+`,
+  css: '', html: '', js: ''
+},
+{
   id: 'blank', title: 'Blank page', tag: '', tagClass: '',
   blurb: 'Start from nothing.',
   html: `<h1>My page</h1>\n`,
@@ -1817,7 +1883,7 @@ const saveSettings = () => store.set('settings', settings);
 
 const uid = () => Math.random().toString(36).slice(2, 10) + Date.now().toString(36).slice(-4);
 function projectFromLesson(l, name) {
-  return { id: uid(), name: name || l.title, lesson: l.id, mode: l.mode || 'web', md: l.md || '', html: l.html || '', css: l.css || '', js: l.js || '', updated: Date.now() };
+  return { id: uid(), name: name || l.title, lesson: l.id, mode: l.mode || 'web', file: l.file || '', md: l.md || '', html: l.html || '', css: l.css || '', js: l.js || '', updated: Date.now() };
 }
 let projects = store.get('projects', null);
 if (!Array.isArray(projects) || !projects.length) projects = [projectFromLesson(LESSONS[0])];
@@ -2135,7 +2201,31 @@ function lintMD(text) {
   if (!text.trim()) return out;
   const lines = text.split('\n');
   let inFence = false, fenceLine = 0, fenceMark = '', lastLevel = 0;
+  let fmEnd = -1;
+  if (/^---\s*$/.test(lines[0])) {
+    fmEnd = lines.findIndex((l, i) => i > 0 && /^---\s*$/.test(l));
+    if (fmEnd === -1) { out.push(annot(lines, 1, 0, 'error', 'The front matter starts with --- but never ends.', 'Add another --- line after the last setting, like name: or description:.')); return out; }
+    const keys = {};
+    for (let i = 1; i < fmEnd; i++) {
+      const L = lines[i];
+      const kv = /^([\w-]+):\s*(.*)$/.exec(L);
+      if (kv) keys[kv[1]] = { value: kv[2].replace(/^(["'])(.*)\1$/, '$2').trim(), line: i + 1, col: L.indexOf(':') + 1 };
+      else if (L.trim() && !/^\s/.test(L)) out.push(annot(lines, i + 1, 0, 'warning', 'Front matter lines should look like key: value', 'For example, name: my-skill'));
+    }
+    if (keys.name || keys.description) {
+      const nm = keys.name, ds = keys.description;
+      if (!nm) out.push(annot(lines, 1, 0, 'warning', 'This skill has no name.', 'Add a line like name: my-skill'));
+      else if (!nm.value) out.push(annot(lines, nm.line, 0, 'error', 'The skill name is empty.', 'Write a short name after name:, like web-coding-tutor'));
+      else if (!/^[a-z0-9-]+$/.test(nm.value)) out.push(annot(lines, nm.line, nm.col + 1, 'warning', 'Skill names use only lowercase letters, numbers and hyphens.', `Try ${nm.value.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}`));
+      else if (nm.value.length > 64) out.push(annot(lines, nm.line, 0, 'warning', 'Skill names can be at most 64 characters.', ''));
+      if (!ds) out.push(annot(lines, 1, 0, 'warning', 'This skill has no description.', 'Add description: saying what the skill does and when to use it.'));
+      else if (!ds.value) out.push(annot(lines, ds.line, 0, 'error', 'The description is empty.', 'Say what the skill does and when it should be used. The AI reads this to decide when to use the skill.'));
+      else if (ds.value.length > 1024) out.push(annot(lines, ds.line, 0, 'warning', `The description is ${ds.value.length} characters long. The limit is 1024.`, 'Shorten it to the key points.'));
+      else if (ds.value.length < 40) out.push(annot(lines, ds.line, 0, 'info', 'This description is very short.', 'Say what the skill does and when to use it, so the AI knows when to pick it.'));
+    }
+  }
   lines.forEach((L, i) => {
+    if (i <= fmEnd) return;
     const n = i + 1;
     let m;
     const f = /^\s{0,3}(`{3,}|~{3,})/.exec(L);
@@ -2174,7 +2264,7 @@ const LINTERS = { md: lintMD, html: lintHTML, css: lintCSS, js: lintJS };
    EDITORS
    ====================================================================== */
 const editors = {};
-const MODES = { md: { name: 'markdown', highlightFormatting: true, tokenTypeOverrides: { list1: 'list', list2: 'list', list3: 'list', code: 'mdcode', hr: 'hr' } }, html: 'htmlmixed', css: 'css', js: 'javascript' };
+const MODES = { md: { name: 'yaml-frontmatter', base: { name: 'markdown', highlightFormatting: true, tokenTypeOverrides: { list1: 'list', list2: 'list', list3: 'list', code: 'mdcode', hr: 'hr' } } }, html: 'htmlmixed', css: 'css', js: 'javascript' };
 CodeMirror.defineMIME('js', 'javascript');
 CodeMirror.defineMIME('html', 'htmlmixed');
 CodeMirror.defineMIME('json', { name: 'javascript', json: true });
@@ -3083,6 +3173,10 @@ th, td { border: 1px solid #dde1ea; padding: .45em .8em; }
 th { background: #f6f8fb; font-weight: 600; }
 hr { border: 0; border-top: 2px solid #e3e6ee; margin: 2em 0; }
 img { max-width: 100%; }
+table.front-matter { display: table; width: 100%; font-size: .9em; margin-bottom: 1.75em; }
+table.front-matter caption { caption-side: top; text-align: left; font-size: .78em; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: #6a55c9; padding-bottom: .4em; }
+table.front-matter th { width: 1%; white-space: nowrap; text-align: left; font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-weight: 600; background: #f4f2fd; color: #4a3aa8; }
+table.front-matter td { background: #fbfaff; }
 .cm-keyword { color: #2550c2; } .cm-string, .cm-string-2 { color: #0d7a4c; } .cm-number, .cm-atom { color: #b0255a; }
 .cm-comment { color: #8a91a4; font-style: italic; } .cm-def { color: #8f3b12; } .cm-variable-2, .cm-property { color: #1d6cb0; }
 .cm-tag { color: #bf3e0a; } .cm-attribute, .cm-builtin { color: #7a3bd8; } .cm-qualifier { color: #bf3e0a; } .cm-meta { color: #697086; }
@@ -3111,12 +3205,30 @@ if (window.marked) {
     }
   });
 }
+/* YAML front matter: the block between --- lines at the very top (used by skill files, blogs and docs sites) */
+function splitFrontMatter(md) {
+  const m = /^---[ \t]*\r?\n([\s\S]*?)\r?\n---[ \t]*(\r?\n|$)/.exec(md || '');
+  if (!m) return { fields: null, body: md || '', lines: 0 };
+  const fields = [];
+  m[1].split(/\r?\n/).forEach(line => {
+    const kv = /^([\w-]+):\s*(.*)$/.exec(line);
+    if (kv) fields.push([kv[1], kv[2].replace(/^(["'])(.*)\1$/, '$2')]);
+    else if (line.trim() && fields.length) fields[fields.length - 1][1] += (fields[fields.length - 1][1] ? ' ' : '') + line.trim().replace(/^-\s*/, '\u2022 ');
+  });
+  return { fields, body: md.slice(m[0].length), lines: m[0].split('\n').length - 1 };
+}
 function renderMarkdown(md) {
-  if (!window.marked) return '<p>The Markdown library didn’t load. Check the internet connection and reload.</p>';
-  try { return marked.parse(md || ''); } catch (e) { return '<pre>' + esc(String(e.message || e)) + '</pre>'; }
+  if (!window.marked) return '<p>The Markdown library didn\u2019t load. Check the internet connection and reload.</p>';
+  const fm = splitFrontMatter(md);
+  let head = '';
+  if (fm.fields) {
+    head = '<table class="front-matter"><caption>Front matter</caption><tbody>' +
+      fm.fields.map(([k, v]) => `<tr><th scope="row">${esc(k)}</th><td>${esc(v)}</td></tr>`).join('') + '</tbody></table>\n';
+  }
+  try { return head + marked.parse(fm.body); } catch (e) { return '<pre>' + esc(String(e.message || e)) + '</pre>'; }
 }
 function mdTitle(md) {
-  const m = /^\s{0,3}#\s+(.+?)\s*#*\s*$/m.exec(md || '');
+  const m = /^\s{0,3}#\s+(.+?)\s*#*\s*$/m.exec(splitFrontMatter(md).body);
   return (m ? m[1].replace(/[*_`~\[\]]|\(.*?\)/g, '') : '') || current.name || 'Document';
 }
 function buildMarkdownPage(md, css, id) {
@@ -3378,7 +3490,9 @@ function applyMode() {
   const mode = modeOf(current);
   app.dataset.mode = mode;
   const langs = MODE_LANGS[mode];
-  $('#addrPath').textContent = mode === 'md' ? '/README.md' : '/index.html';
+  const mdFile = current.file || 'README.md';
+  $('#addrPath').textContent = mode === 'md' ? '/' + mdFile : '/index.html';
+  $('#mdFname').textContent = mdFile;
   $('#dlSub').textContent = mode === 'md' ? 'Your document as a styled web page, ready to share' : 'One file with your HTML, CSS and JavaScript inside';
   $('#copyTitle').textContent = mode === 'md' ? 'Copy Markdown' : 'Copy page code';
   $('#copySub').textContent = mode === 'md' ? 'The Markdown text, ready to paste into a README' : 'The same single file, copied to the clipboard';
@@ -3555,7 +3669,7 @@ $('#fileMenu').addEventListener('click', async e => {
   if (act === 'download') {
     await saveFile(fileName(), isMd ? buildMarkdownPage(editors.md.getValue(), editors.css.getValue(), null) : exportPage(), 'text/html');
   } else if (act === 'download-md') {
-    await saveFile(fileName('.md'), editors.md.getValue(), 'text/markdown');
+    await saveFile(current.file || fileName('.md'), editors.md.getValue(), 'text/markdown');
   } else if (act === 'copy') {
     const ok = await copyText(isMd ? editors.md.getValue() : exportPage());
     toast(!ok ? 'Couldn’t copy. Try Download instead.' : isMd ? 'Markdown copied' : 'Page code copied. Paste it into a file ending in .html');
@@ -3574,7 +3688,7 @@ $('#fileInput').addEventListener('change', e => {
   const f = e.target.files[0]; if (!f) return;
   const r = new FileReader();
   r.onload = () => {
-    if (/\.(md|markdown|txt)$/i.test(f.name)) importMarkdown(String(r.result), f.name.replace(/\.\w+$/, ''));
+    if (/\.(md|markdown|txt)$/i.test(f.name)) importMarkdown(String(r.result), f.name.replace(/\.\w+$/, ''), f.name);
     else importHTML(String(r.result), f.name.replace(/\.html?$/i, ''));
     e.target.value = '';
   };
@@ -3594,9 +3708,9 @@ function importHTML(text, name) {
   openProject(p);
   toast(`Opened ${name}.html as a new project`);
 }
-function importMarkdown(text, name) {
+function importMarkdown(text, name, file) {
   saveNow(false);
-  const p = { id: uid(), name: (name || 'Imported document').slice(0, 60), lesson: null, mode: 'md', md: text, html: '', css: '', js: '', updated: Date.now() };
+  const p = { id: uid(), name: (name || 'Imported document').slice(0, 60), lesson: null, mode: 'md', file: /\.(md|markdown)$/i.test(file || '') ? file : '', md: text, html: '', css: '', js: '', updated: Date.now() };
   projects.unshift(p);
   openProject(p);
   toast(`Opened ${name} as a Markdown document`);

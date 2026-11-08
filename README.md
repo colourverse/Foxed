@@ -2,7 +2,7 @@
 
 A simple HTML, CSS and JavaScript editor to teach (and learn) coding.
 
-Students write HTML, CSS and JavaScript side by side and see the result straight away in a built-in browser preview. Mistakes are marked as they type and explained in plain English, so students can fix problems themselves instead of getting stuck.
+Students write HTML, CSS and JavaScript side by side, or Markdown documents, and see the result straight away in a built-in browser preview. Mistakes are marked as they type and explained in plain English, so students can fix problems themselves instead of getting stuck.
 
 **[Try FoxEd →](https://colourverse.github.io/Foxed/)**
 
@@ -35,11 +35,21 @@ Suggestions appear as you type and only show what makes sense at that point:
 - Desktop, tablet (768px) and phone (375px) sizes for teaching responsive design
 - A console that shows `console.log()` output, with a box for running JavaScript on the page
 
+### Markdown documents
+- A second kind of project for writing Markdown, the format used for GitHub READMEs and notes
+- A live preview styled like a GitHub README, with tables, checklists, and coloured code blocks for JavaScript, HTML and CSS
+- A formatting toolbar for bold, italic, headings, links, pictures, lists, checklists, quotes, code and tables, plus Ctrl+B, Ctrl+I and Ctrl+K
+- Lists continue automatically when you press Enter
+- Checks for common mistakes, such as a missing space after `#`, a link with no address, a picture with no alt text, or a code block that's never closed
+- A clickable cheat sheet that adds examples to your document
+- An optional CSS pane for styling the document
+- Download as `.md` or as a styled `.html` page, and open existing `.md` files
+
 ### Lessons and projects
-- Seven starter lessons: Hello web, a profile card, a click counter, a bouncing ball, a responsive layout, a **Spot the bugs** debugging exercise, and a blank page
+- Eight starter lessons: Hello web, a profile card, a click counter, a bouncing ball, a responsive layout, a **Spot the bugs** debugging exercise, **Markdown basics**, and a blank page
 - Each lesson opens as a new project, and "Reset to starting code" puts it back how it began
 - Work saves automatically in the browser
-- Download any project as a single `.html` file, or open an existing `.html` file to split it into HTML, CSS and JavaScript
+- Download any web project as a single `.html` file, or open an existing `.html` file to split it into HTML, CSS and JavaScript
 
 ## Using FoxEd in class
 
@@ -59,6 +69,7 @@ Projects are saved in each student's own browser. To hand in work, or move it to
 | Ctrl + Space | Show suggestions |
 | Ctrl + / | Comment or uncomment lines |
 | Tab | In HTML, expand `ul>li*3` or `!` into tags |
+| Ctrl + B / I / K | In Markdown, bold, italic or link |
 
 On a Mac, use Cmd instead of Ctrl.
 
@@ -82,6 +93,7 @@ FoxEd runs entirely in the browser and uses these open-source libraries, loaded 
 - [JSHint](https://jshint.com/): JavaScript checking
 - [HTMLHint](https://htmlhint.com/): HTML checking
 - [Acorn](https://github.com/acornjs/acorn): reads JavaScript so runaway loops can be stopped
+- [Marked](https://marked.js.org/): turns Markdown into a web page
 
 CSS is checked by FoxEd itself, using the browser's built-in CSS engine.
 

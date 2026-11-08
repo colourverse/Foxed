@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Foxed</title>
+<title>FoxEd</title>
 <meta name="claude:viewport-fit-sides" content="cover">
-<meta name="description" content="Foxed: a friendly HTML, CSS and JavaScript editor for the classroom.">
+<meta name="description" content="FoxEd: a friendly HTML, CSS and JavaScript editor for the classroom.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600&family=Figtree:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
@@ -986,7 +986,7 @@ li.CodeMirror-hint-active .hint-kind { color: inherit; opacity: .8; }
 
 <div id="app" class="app" data-layout="stack" data-mview="html">
   <header class="topbar">
-    <div class="brand" aria-label="Foxed">
+    <div class="brand" aria-label="FoxEd">
       <svg viewBox="0 0 32 32" aria-hidden="true">
         <path d="M3.5 4.5 L11.5 11 H20.5 L28.5 4.5 L27.5 17.5 L16 28.5 L4.5 17.5 Z" fill="var(--fox)"/>
         <path d="M6.6 8.2 L10.2 11.3 L7 13.2 Z M25.4 8.2 L21.8 11.3 L25 13.2 Z" fill="var(--fox-2)"/>
@@ -995,7 +995,7 @@ li.CodeMirror-hint-active .hint-kind { color: inherit; opacity: .8; }
         <circle cx="20.4" cy="16.4" r="1.5" fill="#1B2030"/>
         <path d="M14.2 25.2 h3.6 l-1.8 2.2 z" fill="#1B2030"/>
       </svg>
-      <span class="wordmark">Fox<b>ed</b></span>
+      <span class="wordmark">Fox<b>Ed</b></span>
     </div>
     <div class="proj">
       <input id="projName" class="proj-name" aria-label="Project name" spellcheck="false" maxlength="60">
@@ -1691,7 +1691,7 @@ let current = projects.find(p => p.id === store.get('current', null)) || project
 
 /* ---------- Bail out if libraries are missing ---------- */
 if (typeof window.CodeMirror !== 'function') {
-  $('#editors').innerHTML = '<div class="pane"><div class="fatal"><strong>Foxed couldn’t load its editor.</strong><br>It needs an internet connection the first time it opens, to fetch the code editor from cdn.jsdelivr.net. Check the connection, then reload the page.</div></div>';
+  $('#editors').innerHTML = '<div class="pane"><div class="fatal"><strong>FoxEd couldn’t load its editor.</strong><br>It needs an internet connection the first time it opens, to fetch the code editor from cdn.jsdelivr.net. Check the connection, then reload the page.</div></div>';
   return;
 }
 const Pos = CodeMirror.Pos;
@@ -1841,7 +1841,7 @@ function lintHTML(text) {
   return out;
 }
 
-/* ---- CSS (Foxed's own checker, using the browser's CSS engine) ---- */
+/* ---- CSS (FoxEd's own checker, using the browser's CSS engine) ---- */
 const HTML_TAGS = 'a abbr address area article aside audio b base bdi bdo blockquote body br button canvas caption cite code col colgroup data datalist dd del details dfn dialog div dl dt em embed fieldset figcaption figure footer form h1 h2 h3 h4 h5 h6 head header hgroup hr html i iframe img input ins kbd label legend li link main map mark menu meta meter nav noscript object ol optgroup option output p param picture pre progress q rp rt ruby s samp script search section select slot small source span strong style sub summary sup table tbody td template textarea tfoot th thead time title tr track u ul var video wbr svg path circle rect line polyline polygon g text ellipse'.split(' ');
 let cssProps = null;
 function knownCssProps() {
@@ -2571,7 +2571,7 @@ function renderProblems() {
   const host = $('#probList');
   const all = LANGS.reduce((n, l) => n + problems[l].length, 0);
   if (!all) {
-    host.innerHTML = '<div class="empty">No problems found. Foxed checks your code as you type: red marks are mistakes that stop things working, yellow ones are worth a second look.</div>';
+    host.innerHTML = '<div class="empty">No problems found. FoxEd checks your code as you type: red marks are mistakes that stop things working, yellow ones are worth a second look.</div>';
     return;
   }
   let h = '';
@@ -2772,7 +2772,7 @@ function previewRuntime(RUN) {
       if (!a.target) { e.preventDefault(); window.open(a.href, '_blank'); }
     } else if (!/^javascript:/i.test(h)) {
       e.preventDefault();
-      send({ type: 'log', level: 'info', args: [{ k: 'str', t: 'Link to “' + h + '” clicked. Foxed shows one page at a time, so other pages of a site can’t open here.' }] });
+      send({ type: 'log', level: 'info', args: [{ k: 'str', t: 'Link to “' + h + '” clicked. FoxEd shows one page at a time, so other pages of a site can’t open here.' }] });
     }
   }, false);
 
@@ -2983,7 +2983,7 @@ window.addEventListener('message', e => {
     case 'title': setPageTitle(d.title); break;
     case 'resource': addRow('warn', [{ k: 'str', t: `Couldn’t load the ${d.tag} file ${d.url}` }], { tip: 'Check the address is spelt correctly and that the file exists.' }); break;
     case 'loop': {
-      addRow('loop', [{ k: 'str', t: 'Foxed stopped a loop that ran for more than 2 seconds.' }], { src: { lang: 'js', line: d.line }, tip: 'Check the loop’s condition can become false, for example that i++ really changes i.' });
+      addRow('loop', [{ k: 'str', t: 'FoxEd stopped a loop that ran for more than 2 seconds.' }], { src: { lang: 'js', line: d.line }, tip: 'Check the loop’s condition can become false, for example that i++ really changes i.' });
       break;
     }
     case 'error': {
